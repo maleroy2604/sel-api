@@ -1,3 +1,4 @@
+
 import datetime
 from flask import Flask
 from flask_restful import Api
@@ -21,7 +22,7 @@ api = Api(app)
 
 jwt = JWT(app, authenticate, identity)
 api.add_resource(User, '/user/<string:username>')
-api.add_resource(UserList, '/users/')
+api.add_resource(UserList, '/users')
 api.add_resource(Exchange, '/exchange/<int:id>')
 api.add_resource(ExchangeList, '/exchanges')
 api.add_resource(ExchangeOcurence, '/exchangeocurence/<int:id>')
