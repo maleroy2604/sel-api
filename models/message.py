@@ -1,9 +1,9 @@
 from db import db
-from flask_restful import marshal
+#from flask_restful import marshal
 from models.exchangeocurence import ExchangeOcurenceModel
 from models.user import UserModel
 from models.exchange import ExchangeModel
-from models.configfields import user_fields
+#from models.configfields import user_fields
 
 class MessageModel(db.Model):
     __tablename__ = 'messages'

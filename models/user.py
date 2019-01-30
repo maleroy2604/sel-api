@@ -1,12 +1,12 @@
 from db import db
 from datetime import datetime
-from flask_restful import marshal
-from models.configfields import messages_fields
+#from flask_restful import marshal
+#from models.configfields import messages_fields
 
-recipients = db.Table('recipients',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-    db.Column('message_id', db.Integer, db.ForeignKey('messages.id'))
-)
+#recipients = db.Table('recipients',
+#    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+#    db.Column('message_id', db.Integer, db.ForeignKey('messages.id'))
+#)
 
 
 class UserModel(db.Model):
