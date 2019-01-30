@@ -3,5 +3,4 @@ Flask-RESTful
 Flask-JWT
 Flask-SQLAlchemy
 uwsgi
-datetime
 psycopg2
