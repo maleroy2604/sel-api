@@ -22,6 +22,11 @@ app.secret_key = 'martin'
 api = Api(app)
 
 jwt = JWT(app, authenticate, identity)
+
+@app.route('/favicon.ico')
+def index():
+    return render_template('index.html')
+
 api.add_resource(User, '/user/<string:username>')
 api.add_resource(UserList, '/users')
 api.add_resource(Exchange, '/exchange/<int:id>')
