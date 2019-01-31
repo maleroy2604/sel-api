@@ -23,7 +23,7 @@ api = Api(app)
 
 jwt = JWT(app, authenticate, identity)
 
-@app.route('/favicon.ico')
+@app.route('/')
 def index():
     return render_template('index.html')
 
