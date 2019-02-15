@@ -22,7 +22,7 @@ class ExchangeModel(db.Model):
     def __init__(self, name, description, date, capacity, owner):
         self.name = name
         self.description = description
-        self.date = datetime.strptime(date,"%Y-%m-%d %H:%M:%S")
+        self.date = datetime.strptime(date,"%Y-%m-%d %H:%M")
         self.currentCapacity = 0
         self.capacity = capacity
         self.owner = owner

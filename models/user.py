@@ -22,7 +22,7 @@ class UserModel(db.Model):
     exchangeOcurences = db.relationship('ExchangeOcurenceModel', lazy = 'dynamic', cascade="all, delete-orphan")
     messagesSends = db.relationship('MessageModel', lazy = 'dynamic', cascade="all, delete-orphan")
 
-    messages_recipient = db.relationship('MessageModel', secondary = recipients, lazy = 'dynamic', backref = db.backref('users_recipient', lazy = 'dynamic') )
+    #messages_recipient = db.relationship('MessageModel', secondary = recipients, lazy = 'dynamic', backref = db.backref('users_recipient', lazy = 'dynamic') )
 
 
     def __init__(self, username, password, email):
