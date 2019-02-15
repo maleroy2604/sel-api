@@ -1,5 +1,5 @@
 
-import datetime
+#import datetime
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
@@ -16,7 +16,7 @@ app.config['DEBUG'] = True
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(seconds=7200)
+#app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(seconds=7200)
 app.secret_key = 'martin'
 api = Api(app)
 
