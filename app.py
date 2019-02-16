@@ -11,6 +11,9 @@ from resources.exchangeocurence import ExchangeOcurence, ExchangeOcurenceList
 from resources.message import Message
 
 app = Flask(__name__)
+
+app.config['DEBUG'] = True
+
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(seconds=7200000)

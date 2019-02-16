@@ -1,6 +1,6 @@
 from db import db
-#from datetime import datetime
-#from flask_restful import marshal
+from datetime import datetime
+from flask_restful import marshal
 #from models.configfields import messages_fields
 
 #recipients = db.Table('recipients',
@@ -18,9 +18,9 @@ class UserModel(db.Model):
     email = db.Column(db.String(80))
     counterHours = db.Column(db.Integer)
 
-    #exchanges = db.relationship('ExchangeModel', lazy = 'dynamic', cascade="all, delete-orphan")
-    #exchangeOcurences = db.relationship('ExchangeOcurenceModel', lazy = 'dynamic', cascade="all, delete-orphan")
-    #messagesSends = db.relationship('MessageModel', lazy = 'dynamic', cascade="all, delete-orphan")
+    exchanges = db.relationship('ExchangeModel', lazy = 'dynamic', cascade="all, delete-orphan")
+    exchangeOcurences = db.relationship('ExchangeOcurenceModel', lazy = 'dynamic', cascade="all, delete-orphan")
+    messagesSends = db.relationship('MessageModel', lazy = 'dynamic', cascade="all, delete-orphan")
 
     #messages_recipient = db.relationship('MessageModel', secondary = recipients, lazy = 'dynamic', backref = db.backref('users_recipient', lazy = 'dynamic') )
 
@@ -29,7 +29,7 @@ class UserModel(db.Model):
         self.username = username
         self.password = password
         self.email = email
-        self.counterHours = 0
+        self.counterHours = 2
 
     def json(self):
         return {
