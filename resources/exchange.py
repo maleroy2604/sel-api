@@ -54,7 +54,7 @@ class Exchange(Resource):
         exchange = ExchangeModel.find_by_id(id)
         if exchange:
             exchange.delete_from_db()
-            return [exchange.json() for exchange in ExchangeModel.query.all()]
+            return exchange.json()
         return {'message': "Exchange not found"}, 404
 
     @jwt_required()

@@ -23,7 +23,7 @@ class User(Resource):
     def get(self, username):
         user = UserModel.find_by_username(username)
         if user:
-            return user.json()
+            return user.json(),201
         return {'message': "User not found"}, 404
 
     def post(self, username):
