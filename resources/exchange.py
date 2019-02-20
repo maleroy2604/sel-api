@@ -12,11 +12,11 @@ class Exchange(Resource):
     )
     parser.add_argument('description',
         type = str,
-        required = False
+        required = True
     )
     parser.add_argument('date',
         type = str,
-        required = False
+        required = True
     )
     parser.add_argument('capacity',
         type = int,
@@ -26,7 +26,7 @@ class Exchange(Resource):
     )
     parser.add_argument('owner',
         type = int,
-        required = False
+        required = True
     )
 
     @jwt_required()
@@ -34,7 +34,7 @@ class Exchange(Resource):
         exchange = ExchangeModel.find_by_id(id)
         if exchange:
             return exchange.json()
-        return {'message': 'exchnage not found'}, 404
+        return {'message': 'exchange not found'}, 404
 
     @jwt_required()
     def post(self, id):
