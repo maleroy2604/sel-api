@@ -12,11 +12,13 @@ class Exchange(Resource):
     )
     parser.add_argument('description',
         type = str,
-        required = True
+        required = True,
+        help = "description is required"
     )
     parser.add_argument('date',
         type = str,
-        required = True
+        required = True,
+        help = "date is required"
     )
     parser.add_argument('capacity',
         type = int,
@@ -26,7 +28,8 @@ class Exchange(Resource):
     )
     parser.add_argument('owner',
         type = int,
-        required = True
+        required = True,
+        help = "owner is required"
     )
 
     @jwt_required()
