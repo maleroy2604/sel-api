@@ -17,6 +17,7 @@ app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(seconds=7200000)
+app.config['PROPAGATE_EXCEPTIONS'] = True
 app.secret_key = 'martin'
 api = Api(app)
 

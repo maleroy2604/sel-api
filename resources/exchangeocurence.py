@@ -8,9 +8,7 @@ from datetime import datetime
 
 class ExchangeOcurence(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('validateuser',
-        type = int
-    )
+
     parser.add_argument('exchange_id',
         type = int,
         required = True,
@@ -22,7 +20,8 @@ class ExchangeOcurence(Resource):
         help = "participant_id is required"
     )
     parser.add_argument('hours',
-        type = int
+        type = int,
+        required = False
     )
 
     @jwt_required()
@@ -36,7 +35,7 @@ class ExchangeOcurence(Resource):
                 exchange.increase_current_capacity()
                 return exchangeocurence.json(), 201
             else :
-                return {'message':"There is no place available"}
+                return {'message':"There is no place available"}, 500
         except:
             return {'message':"An error occured inserting the exchangeocurence"}, 500
 

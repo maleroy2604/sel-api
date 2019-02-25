@@ -21,7 +21,7 @@ class ExchangeOcurenceModel(db.Model):
 
     def json(self):
         return {'id': self.id,
-                    'validateuser': self.validateUser,
+                    #'validateuser': self.validateUser,
                     'exchange_id':self.exchangeId,
                     'participant': UserModel.find_by_id(self.participantId).username,
                     'participant_id': self.participantId
