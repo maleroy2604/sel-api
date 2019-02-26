@@ -34,7 +34,7 @@ class User(Resource):
         user = UserModel(username, data['password'],  data['email'])
         user.save_to_db()
 
-        return user.json(), 201
+        return user.json() , 201
 
     @jwt_required()
     def delete(self, username):
