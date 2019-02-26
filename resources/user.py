@@ -19,7 +19,6 @@ class User(Resource):
         type = int
     )
 
-    @jwt_required()
     def get(self, username):
         user = UserModel.find_by_username(username)
         if user:
@@ -33,6 +32,7 @@ class User(Resource):
         data = User.parser.parse_args()
         user = UserModel(username, data['password'],  data['email'])
         user.save_to_db()
+        user = UserModel.find_by_username(username)
 
         return user.json() , 201
 
