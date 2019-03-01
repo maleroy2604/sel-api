@@ -35,8 +35,8 @@ class UserModel(db.Model):
         return {
                 'id': self.id,
                 'username': self.username,
-                'password': self.password,
-                'email': self.email,
+                #'password': self.password,
+                #'email': self.email,
                 'counterhours': self.counterHours,
                 #'exchangeocurence': [exchangeOcurence.json() for exchangeOcurence in self.exchangeOcurences.all()],
                 #'message': [marshal(message, messages_fields) for message in self.messages_recipient]
