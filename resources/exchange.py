@@ -76,5 +76,5 @@ class Exchange(Resource):
 
 class ExchangeList(Resource):
     @jwt_required()
-    def get(self):
-        return [exchange.json() for exchange in ExchangeModel.query.all()]
+    def get(self, numberlimit):
+        return [exchange.json() for exchange in ExchangeModel.query.order_by(ExchangeModel.id.desc()).limit(numberlimit)]
