@@ -70,3 +70,7 @@ class UserModel(db.Model):
         for exchangeocurence in exchangeOcurences:
             users.append(UserModel.find_by_id(exchangeocurence.participantId))
         return users
+
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()

@@ -63,4 +63,4 @@ class User(Resource):
 class UserList(Resource):
     @jwt_required()
     def get(self):
-        return {'users': [user.json() for user in UserModel.query.all()]}
+        return {'users': [user.json() for user in UserModel.find_all()]}
