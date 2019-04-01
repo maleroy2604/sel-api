@@ -36,7 +36,7 @@ class UserModel(db.Model):
                 'id': self.id,
                 'username': self.username,
                 #'password': self.password,
-                #'email': self.email,
+                'email': self.email,
                 'counterhours': self.counterHours,
                 #'exchangeocurence': [exchangeOcurence.json() for exchangeOcurence in self.exchangeOcurences.all()],
                 #'message': [marshal(message, messages_fields) for message in self.messages_recipient]
@@ -57,8 +57,8 @@ class UserModel(db.Model):
         self.counterHours -= hours
 
     @classmethod
-    def find_by_username(cls, username):
-        return cls.query.filter_by(username=username).first()
+    def find_by_username(cls,username):
+        return cls.query.filter_by(username = username).first()
 
     @classmethod
     def find_by_id(cls, _id):

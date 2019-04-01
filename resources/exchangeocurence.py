@@ -1,6 +1,6 @@
 import sqlite3
 from flask_restful import Resource, reqparse
-from flask_jwt import jwt_required
+from flask_jwt_extended import jwt_required
 from models.exchangeocurence import ExchangeOcurenceModel
 from models.exchange import ExchangeModel
 from models.user import UserModel
@@ -24,7 +24,7 @@ class ExchangeOcurence(Resource):
         required = False
     )
 
-    @jwt_required()
+    @jwt_required
     def post(self, id):
         data = ExchangeOcurence.parser.parse_args()
         exchange = ExchangeModel.find_by_id(data['exchange_id'])
@@ -39,7 +39,7 @@ class ExchangeOcurence(Resource):
         except:
             return {'message':"An error occured inserting the exchangeocurence"}, 500
 
-    @jwt_required()
+    @jwt_required
     def put(self, id):
         data = ExchangeOcurence.parser.parse_args()
         exchangeocurence = ExchangeOcurenceModel.find_by_id(id)
@@ -59,7 +59,7 @@ class ExchangeOcurence(Resource):
         return exchangeocurence.json() , 201
         return {'message': "Exchangeocurence not found"}, 404
 
-    @jwt_required()
+    @jwt_required
     def delete(self, id):
         exchangeocurence = ExchangeOcurenceModel.find_by_id(id)
         exchange = ExchangeModel.find_by_id(exchangeocurence.exchangeId)
@@ -71,6 +71,6 @@ class ExchangeOcurence(Resource):
 
 
 class ExchangeOcurenceList(Resource):
-    @jwt_required()
+    @jwt_required
     def get(self, exchangeId):
         return [exchangeocurence.json() for exchangeocurence in ExchangeOcurenceModel.find_by_exchange_id(exchangeId)]

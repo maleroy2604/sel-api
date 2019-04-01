@@ -1,6 +1,5 @@
-import sqlite3
 from flask_restful import Resource, reqparse
-from flask_jwt import jwt_required
+from flask_jwt_extended import jwt_required
 from models.exchange import ExchangeModel
 
 class Exchange(Resource):
@@ -32,14 +31,14 @@ class Exchange(Resource):
         help = "owner is required"
     )
 
-    @jwt_required()
+    @jwt_required
     def get(self, id):
         exchange = ExchangeModel.find_by_id(id)
         if exchange:
             return exchange.json()
         return {'message': 'exchange not found'}, 404
 
-    @jwt_required()
+    @jwt_required
     def post(self, id):
         data = Exchange.parser.parse_args()
         exchange = ExchangeModel(**data)
@@ -49,7 +48,7 @@ class Exchange(Resource):
             return {'message':"An error occured inserting the exchange"},500
         return exchange.json(), 201
 
-    @jwt_required()
+    @jwt_required
     def delete(self, id):
         exchange = ExchangeModel.find_by_id(id)
         if exchange:
@@ -57,7 +56,7 @@ class Exchange(Resource):
             return exchange.json()
         return {'message': "Exchange not found"}, 404
 
-    @jwt_required()
+    @jwt_required
     def put(self, id):
         data = Exchange.parser.parse_args()
         exchange = ExchangeModel.find_by_id(id)
@@ -75,6 +74,6 @@ class Exchange(Resource):
 
 
 class ExchangeList(Resource):
-    @jwt_required()
+    @jwt_required
     def get(self, numberlimit):
         return [exchange.json() for exchange in ExchangeModel.find_all_limit(numberlimit)]

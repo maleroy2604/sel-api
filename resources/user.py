@@ -1,10 +1,14 @@
-import sqlite3
 from flask_restful import Resource, reqparse
 from models.user import UserModel
-from flask_jwt import jwt_required
+from flask_jwt_extended import jwt_required
 
 class User(Resource):
     parser = reqparse.RequestParser()
+    parser.add_argument('username',
+        type = str,
+        required = True,
+        help = "Username required"
+    )
     parser.add_argument('password',
         type = str,
         required = True,
@@ -15,43 +19,32 @@ class User(Resource):
         required = True,
         help = "email required"
     )
-    parser.add_argument('counterhours',
-        type = int
-    )
 
-    def get(self, username):
-        user = UserModel.find_by_username(username)
+    @classmethod
+    def get(cls, id):
+        user = UserModel.find_by_id(id)
         if user:
             return user.json(),201
         return {'message': "User not found"}, 404
 
-    def post(self, username):
-        if UserModel.find_by_username(username):
-            return {'message': "User already exists."}, 400
-
-        data = User.parser.parse_args()
-        user = UserModel(username, data['password'],  data['email'])
-        user.save_to_db()
-        user = UserModel.find_by_username(username)
-
-        return user.json() , 201
-
-    @jwt_required()
-    def delete(self, username):
-        user = UserModel.find_by_username(username)
+    @classmethod
+    @jwt_required
+    def delete(cls, id):
+        user = UserModel.find_by_id(id)
         if user:
             user.delete_from_db()
             return {'message': "User succefully deleted"}
         return {'message': "User not found"}, 404
 
-    @jwt_required()
-    def put(self, username):
+
+    @jwt_required
+    def put(self, id):
         data = User.parser.parse_args()
-        user = UserModel.find_by_username(username)
+        user = UserModel.find_by_id(id)
         if user:
-            user.password = data['password']
-            user.email = data['email']
-            user.counterHours = data['counterhours']
+            self.username = data['username']
+            self.password = data['password']
+            self.email = data['email']
             try:
                 user.save_to_db()
                 return user.json(), 201
@@ -61,6 +54,6 @@ class User(Resource):
         return {'message': "User not found"}, 404
 
 class UserList(Resource):
-    @jwt_required()
+    @jwt_required
     def get(self):
         return {'users': [user.json() for user in UserModel.find_all()]}
