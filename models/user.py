@@ -1,6 +1,8 @@
 from db import db
 from datetime import datetime
 from flask_restful import marshal
+from typing import Dict, List
+
 #from models.configfields import messages_fields
 
 #recipients = db.Table('recipients',
@@ -25,7 +27,7 @@ class UserModel(db.Model):
     #messages_recipient = db.relationship('MessageModel', secondary = recipients, lazy = 'dynamic', backref = db.backref('users_recipient', lazy = 'dynamic') )
 
 
-    def __init__(self, username, password, email):
+    def __init__(self, username :str, password :str, email :str):
         self.username = username
         self.password = password
         self.email = email
@@ -35,7 +37,7 @@ class UserModel(db.Model):
         return {
                 'id': self.id,
                 'username': self.username,
-                #'password': self.password,
+                'password': self.password,
                 'email': self.email,
                 'counterhours': self.counterHours,
                 #'exchangeocurence': [exchangeOcurence.json() for exchangeOcurence in self.exchangeOcurences.all()],

@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from resources.user import UserModel
 from flask_jwt_extended import create_access_token, create_refresh_token
+from security import encrypt_password
 
 class UserRegister(Resource):
     parser =reqparse.RequestParser()
@@ -27,7 +28,8 @@ class UserRegister(Resource):
             return {'message': "User with this name already exists."}, 400
         if(data['password'] != data['confirmpassword']):
              return {'message': "password and confirmpassword has to be the same."}, 400
-        user = UserModel(data['username'], data['password'], data['email'])
+
+        user = UserModel(data['username'], encrypt_password(data['password']), data['email'])
         user.save_to_db()
         user = UserModel.find_by_username(data['username'])
         access_token = create_access_token(identity = user.id, fresh=True)
