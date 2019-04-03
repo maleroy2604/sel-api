@@ -74,6 +74,18 @@ class Exchange(Resource):
 
 
 class ExchangeList(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('numberlimitmax',
+        type = int,
+        required = True,
+        help = "max is required"
+    )
+    parser.add_argument('numberlimitmin',
+        type = int,
+        required = True,
+        help = "min is required"
+    )
     @jwt_required
-    def get(self, numberlimit):
-        return [exchange.json() for exchange in ExchangeModel.find_all_limit(numberlimit)]
+    def post(self):
+        data = ExchangeList.parser.parse_args()
+        return [exchange.json() for exchange in ExchangeModel.find_all_limit(**data)]

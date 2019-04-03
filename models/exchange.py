@@ -44,10 +44,10 @@ class ExchangeModel(db.Model):
     @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
-        
+
     @classmethod
-    def find_all_limit(cls, numberlimit):
-        return cls.query.order_by(ExchangeModel.id.desc()).limit(numberlimit);
+    def find_all_limit(cls, numberlimitmax, numberlimitmin):
+        return cls.query.order_by(ExchangeModel.id.desc()).slice(numberlimitmin, numberlimitmax);
 
     def save_to_db(self):
         db.session.add(self)
