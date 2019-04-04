@@ -1,7 +1,12 @@
 from db import db
 from models.user import UserModel
-from models.exchangeocurence import ExchangeOcurenceModel
+from models.exchangeocurence import ExchangeOcurenceModel, ExchangeOcurenceJSON
+from models.message import MessageJSON
 from datetime import datetime
+from typing import Dict, List, Union
+
+ExchangeJSON = Dict[str, Union[str, int, List[ExchangeOcurenceJSON], List[MessageJSON]]]
+
 
 class ExchangeModel(db.Model):
     __tablename__ = 'exchanges'
@@ -19,7 +24,7 @@ class ExchangeModel(db.Model):
     exchangeOcurences = db.relationship('ExchangeOcurenceModel' , lazy = 'dynamic',  cascade="all, delete-orphan")
     messages = db.relationship('MessageModel' , lazy = 'dynamic',  cascade="all, delete-orphan")
 
-    def __init__(self, name, description, date, capacity, owner):
+    def __init__(self, name: str, description: str, date: str, capacity: int, owner: int):
         self.name = name
         self.description = description
         self.date = datetime.strptime(date,"%Y-%m-%d %H:%M:%S")
@@ -27,7 +32,7 @@ class ExchangeModel(db.Model):
         self.capacity = capacity
         self.owner = owner
 
-    def json(self):
+    def json(self) -> ExchangeJSON:
         return {
                     'id': self.id,
                     'name': self.name,
@@ -42,32 +47,32 @@ class ExchangeModel(db.Model):
                 }
 
     @classmethod
-    def find_by_id(cls, id):
+    def find_by_id(cls, id: int):
         return cls.query.filter_by(id=id).first()
 
     @classmethod
-    def find_all_limit(cls, numberlimitmax, numberlimitmin):
+    def find_all_limit(cls, numberlimitmax: int, numberlimitmin: int) -> List:
         return cls.query.order_by(ExchangeModel.id.desc()).slice(numberlimitmin, numberlimitmax);
 
-    def save_to_db(self):
+    def save_to_db(self) -> None:
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
+    def delete_from_db(self) -> None:
         db.session.delete(self)
         db.session.commit()
 
-    def increase_current_capacity(self):
+    def increase_current_capacity(self) -> None:
         self.currentCapacity += 1
         db.session.add(self)
         db.session.commit()
 
-    def decrease_current_capacity(self):
+    def decrease_current_capacity(self) -> None:
         if self.currentCapacity > 0 :
             self.currentCapacity -= 1
         db.session.add(self)
         db.session.commit()
 
-    def check_balance_owner(self, hours):
+    def check_balance_owner(self, hours: int) -> None:
         user = UserModel.find_by_id(self.owner)
         return user.counterHours >= hours

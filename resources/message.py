@@ -22,7 +22,7 @@ class Message(Resource):
     )
 
     @jwt_required
-    def post(self, id):
+    def post(self, id: int):
         data = Message.parser.parse_args()
         message = MessageModel(**data)
         try:

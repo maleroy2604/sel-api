@@ -32,14 +32,14 @@ class Exchange(Resource):
     )
 
     @jwt_required
-    def get(self, id):
+    def get(self, id: int):
         exchange = ExchangeModel.find_by_id(id)
         if exchange:
             return exchange.json()
         return {'message': 'exchange not found'}, 404
 
     @jwt_required
-    def post(self, id):
+    def post(self, id: int):
         data = Exchange.parser.parse_args()
         exchange = ExchangeModel(**data)
         try:
@@ -49,7 +49,7 @@ class Exchange(Resource):
         return exchange.json(), 201
 
     @jwt_required
-    def delete(self, id):
+    def delete(self, id: int):
         exchange = ExchangeModel.find_by_id(id)
         if exchange:
             exchange.delete_from_db()
@@ -57,7 +57,7 @@ class Exchange(Resource):
         return {'message': "Exchange not found"}, 404
 
     @jwt_required
-    def put(self, id):
+    def put(self, id: int):
         data = Exchange.parser.parse_args()
         exchange = ExchangeModel.find_by_id(id)
         if exchange:

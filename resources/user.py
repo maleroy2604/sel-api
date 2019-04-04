@@ -21,7 +21,7 @@ class User(Resource):
     )
 
     @classmethod
-    def get(cls, id):
+    def get(cls, id: int):
         user = UserModel.find_by_id(id)
         if user:
             return user.json(),201
@@ -29,7 +29,7 @@ class User(Resource):
 
     @classmethod
     @jwt_required
-    def delete(cls, id):
+    def delete(cls, id: int):
         user = UserModel.find_by_id(id)
         if user:
             user.delete_from_db()
@@ -38,7 +38,7 @@ class User(Resource):
 
 
     @jwt_required
-    def put(self, id):
+    def put(self, id: int):
         data = User.parser.parse_args()
         user = UserModel.find_by_id(id)
         if user:

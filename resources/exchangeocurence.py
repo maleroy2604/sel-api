@@ -25,7 +25,7 @@ class ExchangeOcurence(Resource):
     )
 
     @jwt_required
-    def post(self, id):
+    def post(self, id: int):
         data = ExchangeOcurence.parser.parse_args()
         exchange = ExchangeModel.find_by_id(data['exchange_id'])
         exchangeocurence = ExchangeOcurenceModel(data['exchange_id'], data['participant_id'])
@@ -40,7 +40,7 @@ class ExchangeOcurence(Resource):
             return {'message':"An error occured inserting the exchangeocurence"}, 500
 
     @jwt_required
-    def put(self, id):
+    def put(self, id: int):
         data = ExchangeOcurence.parser.parse_args()
         exchangeocurence = ExchangeOcurenceModel.find_by_id(id)
         exchange = ExchangeModel.find_by_id(data['exchange_id'])
@@ -60,7 +60,7 @@ class ExchangeOcurence(Resource):
         return {'message': "Exchangeocurence not found"}, 404
 
     @jwt_required
-    def delete(self, id):
+    def delete(self, id: int):
         exchangeocurence = ExchangeOcurenceModel.find_by_id(id)
         exchange = ExchangeModel.find_by_id(exchangeocurence.exchangeId)
         if exchangeocurence:
@@ -72,5 +72,5 @@ class ExchangeOcurence(Resource):
 
 class ExchangeOcurenceList(Resource):
     @jwt_required
-    def get(self, exchangeId):
+    def get(self, exchangeId: int):
         return [exchangeocurence.json() for exchangeocurence in ExchangeOcurenceModel.find_by_exchange_id(exchangeId)]
