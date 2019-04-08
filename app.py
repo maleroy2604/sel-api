@@ -13,12 +13,10 @@ from resources.message import Message
 from resources.authenticate import Authenticate
 from resources.userlogout import UserLogout
 from blacklist import BLACKLIST
-
+from ma import ma
 
 app = Flask(__name__)
-
 app.config["DEBUG"] = True
-
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "DATABASE_URL", "sqlite:///data.db"
 )
@@ -29,7 +27,6 @@ app.config["JWT_BLACKLIST_ENABLED"] = True
 app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access", "refresh"]
 app.secret_key = "martin"
 api = Api(app)
-
 jwt = JWTManager(app)
 
 
@@ -58,6 +55,7 @@ if __name__ == "__main__":
     from db import db
 
     db.init_app(app)
+    ma.init_app(app)
 
     if app.config["DEBUG"]:
 

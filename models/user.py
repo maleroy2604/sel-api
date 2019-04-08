@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import List
 from db import db
 from datetime import datetime
 from flask_restful import marshal
@@ -10,17 +10,16 @@ from flask_restful import marshal
 #    db.Column('message_id', db.Integer, db.ForeignKey('messages.id'))
 # )
 
-UserJSON = [str, Union[str, int]]
-
 
 class UserModel(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80))
-    password = db.Column(db.String(256))
+    username = db.Column(db.String(80), nullable=False)
+    password = db.Column(db.String(256), nullable=False)
+    confirmpassword = db.Column(db.String(80))
     email = db.Column(db.String(80))
-    counterHours = db.Column(db.Integer)
+    counterHours = db.Column(db.Integer, default=2)
 
     exchanges = db.relationship(
         "ExchangeModel", lazy="dynamic", cascade="all, delete-orphan"
@@ -33,23 +32,6 @@ class UserModel(db.Model):
     )
 
     # messages_recipient = db.relationship('MessageModel', secondary = recipients, lazy = 'dynamic', backref = db.backref('users_recipient', lazy = 'dynamic') )
-
-    def __init__(self, username: str, password: str, email: str):
-        self.username = username
-        self.password = password
-        self.email = email
-        self.counterHours = 2
-
-    def json(self) -> UserJSON:
-        return {
-            "id": self.id,
-            "username": self.username,
-            #'password': self.password,
-            "email": self.email,
-            "counterhours": self.counterHours,
-            #'exchangeocurence': [exchangeOcurence.json() for exchangeOcurence in self.exchangeOcurences.all()],
-            #'message': [marshal(message, messages_fields) for message in self.messages_recipient]
-        }
 
     def save_to_db(self) -> None:
         db.session.add(self)

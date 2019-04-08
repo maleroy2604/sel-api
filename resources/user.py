@@ -1,30 +1,23 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
+from flask import request
 from models.user import UserModel
 from flask_jwt_extended import jwt_required
+from schemas.user import UserSchema
 
-BLANK_ERROR = "'{}' can't let be blank."
 NOT_FOUND_ERROR = "'{}' not found."
 DELETE_SUCCEFUL = "'{}' succefully delete. "
 ERROR_INSERTING = "An error occurred while inserting the'{}'."
 
+user_schema = UserSchema()
+user_list_schema = UserSchema(many=True)
+
 
 class User(Resource):
-    parser = reqparse.RequestParser()
-    parser.add_argument(
-        "username", type=str, required=True, help=BLANK_ERROR.format("username")
-    )
-    parser.add_argument(
-        "password", type=str, required=True, help=BLANK_ERROR.format("password")
-    )
-    parser.add_argument(
-        "email", type=str, required=True, help=BLANK_ERROR.format("email")
-    )
-
     @classmethod
     def get(cls, id: int):
         user = UserModel.find_by_id(id)
         if user:
-            return user.json(), 201
+            return user_schema.dump(user), 201
         return {"message": NOT_FOUND_ERROR.format("user")}, 404
 
     @classmethod
@@ -38,15 +31,18 @@ class User(Resource):
 
     @jwt_required
     def put(self, id: int):
-        data = User.parser.parse_args()
+        try:
+            user_data = user_schema.load(request.get_json(), instance=UserModel())
+        except ValidationError as err:
+            return err.messages, 400
         user = UserModel.find_by_id(id)
         if user:
-            user.username = data["username"]
-            user.password = data["password"]
-            user.email = data["email"]
+            user.username = user_data.username
+            user.password = user_data.password
+            user.email = user_data.email
             try:
                 user.save_to_db()
-                return user.json(), 201
+                return user_schema.dump(user), 201
             except:
                 return {"message": ERROR_INSERTING.format("user")}
 
@@ -57,4 +53,4 @@ class UserList(Resource):
     @classmethod
     @jwt_required
     def get(cls):
-        return {"users": [user.json() for user in UserModel.find_all()]}
+        return {"users": user_list_schema.dump(UserModel.find_all())}

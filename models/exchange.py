@@ -1,24 +1,22 @@
 from db import db
 from models.user import UserModel
-from models.exchangeocurence import ExchangeOcurenceModel, ExchangeOcurenceJSON
-from models.message import MessageJSON
+from models.exchangeocurence import ExchangeOcurenceModel
 from datetime import datetime
-from typing import Dict, List, Union
-
-ExchangeJSON = Dict[str, Union[str, int, List[ExchangeOcurenceJSON], List[MessageJSON]]]
+from typing import List
 
 
 class ExchangeModel(db.Model):
     __tablename__ = "exchanges"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
-    description = db.Column(db.String(80))
-    currentCapacity = db.Column(db.Integer)
-    capacity = db.Column(db.Integer)
-    date = db.Column(db.String(80))
+    name = db.Column(db.String(80), nullable=False)
+    description = db.Column(db.String(80), nullable=False)
+    currentCapacity = db.Column(db.Integer, nullable=False, default=0)
+    capacity = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.String(80), nullable=False)
+    ownerName = db.Column(db.String(80))
 
-    owner = db.Column(db.Integer, db.ForeignKey("users.id"))
+    owner = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     user = db.relationship("UserModel")
 
     exchangeOcurences = db.relationship(
@@ -28,41 +26,14 @@ class ExchangeModel(db.Model):
         "MessageModel", lazy="dynamic", cascade="all, delete-orphan"
     )
 
-    def __init__(
-        self, name: str, description: str, date: str, capacity: int, owner: int
-    ):
-        self.name = name
-        self.description = description
-        self.date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
-        self.currentCapacity = 0
-        self.capacity = capacity
-        self.owner = owner
-
-    def json(self) -> ExchangeJSON:
-        return {
-            "id": self.id,
-            "name": self.name,
-            "description": self.description,
-            "date": self.date,
-            "capacity": self.capacity,
-            "current_capacity": self.currentCapacity,
-            "owner": self.owner,
-            "ownerName": UserModel.find_by_id(self.owner).username,
-            "exchangeocurence": [
-                exchangeOcurence.json()
-                for exchangeOcurence in self.exchangeOcurences.all()
-            ],
-            "messages": [message.json() for message in self.messages.all()],
-        }
-
     @classmethod
     def find_by_id(cls, id: int) -> "ExchangeModel":
         return cls.query.filter_by(id=id).first()
 
     @classmethod
-    def find_all_limit(cls, numberlimitmax: int, numberlimitmin: int) -> List:
+    def find_all_limit(cls, numberlimit) -> List:
         return cls.query.order_by(ExchangeModel.id.desc()).slice(
-            numberlimitmin, numberlimitmax
+            numberlimit.numberlimitmin, numberlimit.numberlimitmax
         )
 
     def save_to_db(self) -> None:
