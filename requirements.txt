@@ -5,4 +5,4 @@ Flask-SQLAlchemy
 uwsgi
 psycopg2
 passlib
-flask-marshmallow
+Flask-marshmallow
