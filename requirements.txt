@@ -7,4 +7,4 @@ psycopg2
 passlib
 Marshmallow == 3.0.0rc5
 Flask-marshmallow == 0.10.0
-marshmallow-sqlalchemy == *
+marshmallow-sqlalchemy == 0.16.1
