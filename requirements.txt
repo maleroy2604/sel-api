@@ -5,6 +5,6 @@ Flask-SQLAlchemy
 uwsgi
 psycopg2
 passlib
-Marshmallow
-Flask-marshmallow
-marshmallow-sqlalchemy
+Marshmallow == *
+Flask-marshmallow == *
+marshmallow-sqlalchemy == *
