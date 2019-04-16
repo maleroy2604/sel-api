@@ -1,8 +1,7 @@
-import os
-import datetime
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from marshmallow import ValidationError
 
 from resources.user import User, UserList
 from resources.userregister import UserRegister
@@ -16,17 +15,16 @@ from blacklist import BLACKLIST
 from ma import ma
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    "DATABASE_URL", "sqlite:///data.db"
-)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(seconds=7200000)
-app.config["PROPAGATE_EXCEPTIONS"] = True
-app.config["JWT_BLACKLIST_ENABLED"] = True
-app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access", "refresh"]
 app.secret_key = "martin"
+app.config.from_object("config")
 api = Api(app)
+
+
+@app.errorhandler(ValidationError)
+def handle_marshmallow_validation(err):
+    return jsonify(err.messages), 400
+
+
 jwt = JWTManager(app)
 
 

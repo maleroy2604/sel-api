@@ -12,10 +12,7 @@ user_schema = UserSchema()
 
 class UserRegister(Resource):
     def post(self):
-        try:
-            user = user_schema.load(request.get_json())
-        except ValidationError as err:
-            return err.messages, 400
+        user = user_schema.load(request.get_json())
         if UserModel.find_by_username(user.username):
             return {"message": ALREADY_EXISTS.format("User")}, 400
         if user.password != user.confirmpassword:

@@ -31,10 +31,7 @@ class User(Resource):
 
     @jwt_required
     def put(self, id: int):
-        try:
-            user_data = user_schema.load(request.get_json(), instance=UserModel())
-        except ValidationError as err:
-            return err.messages, 400
+        user_data = user_schema.load(request.get_json(), instance=UserModel())
         user = UserModel.find_by_id(id)
         if user:
             user.username = user_data.username
