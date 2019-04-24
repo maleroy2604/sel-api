@@ -9,6 +9,9 @@ from schemas.image import ImageSchema
 
 image_schema = ImageSchema()
 
+UPDATE_IMAGE_SUCCESS = "Image {} uploaded with success"
+UPDATE_IMAGE_FAIL = "Extension {} is not autorise"
+
 
 class ImageUpload(Resource):
     @jwt_required
@@ -19,7 +22,7 @@ class ImageUpload(Resource):
         try:
             image_path = image_helper.save_image(data["image"], folder=folder)
             basename = image_helper.get_basename(image_path)
-            return {"message": "Image upload"}, 201
+            return {"message": UPDATE_IMAGE_SUCCESS.format(image_path)}, 201
         except UploadNotAllowed:
             extension = image_helper.get_extension(data["image"])
-            return {"message": "Fail upload image"}, 400
+            return {"message": UPDATE_IMAGE_FAIL.format(extension)}, 400
