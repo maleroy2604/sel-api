@@ -8,3 +8,4 @@ PROPAGATE_EXCEPTIONS = True
 JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(seconds=7200000)
 JWT_BLACKLIST_ENABLED = True
 JWT_BLACKLIST_TOKEN_CHECKS = ["access", "refresh"]
+UPLOADED_IMAGES_DEST = os.path.join("static", "images")

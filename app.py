@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from marshmallow import ValidationError
+from flask_uploads import configure_uploads, patch_request_class
 
 from resources.user import User, UserList
 from resources.userregister import UserRegister
@@ -12,11 +13,16 @@ from resources.message import Message
 from resources.authenticate import Authenticate
 from resources.userlogout import UserLogout
 from blacklist import BLACKLIST
+from db import db
 from ma import ma
+from resources.image import ImageUpload
+from libs.image_helper import IMAGE_SET
 
 app = Flask(__name__)
 app.secret_key = "martin"
 app.config.from_object("config")
+patch_request_class(app, 10 * 1024 * 1024)
+configure_uploads(app, IMAGE_SET)
 api = Api(app)
 
 
@@ -47,10 +53,10 @@ api.add_resource(ExchangeOcurence, "/exchangeocurence/<int:id>")
 api.add_resource(ExchangeOcurenceList, "/exchangeocurences/<exchangeId>")
 
 api.add_resource(Message, "/message/<int:id>")
+api.add_resource(ImageUpload, "/upload/image")
 
 
 if __name__ == "__main__":
-    from db import db
 
     db.init_app(app)
     ma.init_app(app)
