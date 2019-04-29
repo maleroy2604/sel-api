@@ -4,11 +4,8 @@ from schemas.exchange import ExchangeSchema
 from schemas.numberlimit import NumberLimitSchema
 from flask_jwt_extended import jwt_required
 from models.exchange import ExchangeModel
+from libs.strings import gettext
 
-
-BLANK_ERROR = "'{}' can't let be blank."
-NOT_FOUND_ERROR = "'{}' not found."
-ERROR_INSERTING = "An error occurred while inserting the'{}'."
 
 exchange_schema = ExchangeSchema()
 exchange_list_schema = ExchangeSchema(many=True)
@@ -22,7 +19,7 @@ class Exchange(Resource):
         exchange = ExchangeModel.find_by_id(id)
         if exchange:
             return exchange_schema.dump(exchange)
-        return {"message": NOT_FOUND_ERROR.format("exchange")}, 404
+        return {"message": gettext("not_found_error").format("exchange")}, 404
 
     @classmethod
     @jwt_required
@@ -31,7 +28,7 @@ class Exchange(Resource):
         try:
             exchange.save_to_db()
         except:
-            return {"message": ERROR_INSERTING.format("exchange")}, 500
+            return {"message": gettext("error_inserting").format("exchange")}, 500
         return exchange_schema.dump(exchange), 201
 
     @classmethod
@@ -41,7 +38,7 @@ class Exchange(Resource):
         if exchange:
             exchange.delete_from_db()
             return exchange_schema.dump(exchange)
-        return {"message": NOT_FOUND_ERROR.format("message")}, 404
+        return {"message": gettext("not_found_error").format("message")}, 404
 
     @jwt_required
     def put(self, id: int):
@@ -58,9 +55,9 @@ class Exchange(Resource):
             try:
                 exchange.save_to_db()
             except:
-                return {"message": ERROR_INSERTING.format("exchange")}, 500
+                return {"message": gettext("error_inserting").format("exchange")}, 500
             return exchange_schema.dump(exchange), 201
-        return {"message": NOT_FOUND_ERROR.format("message")}, 404
+        return {"message": gettext("not_found_error").format("message")}, 404
 
 
 class ExchangeList(Resource):

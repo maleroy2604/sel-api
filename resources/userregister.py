@@ -4,9 +4,6 @@ from resources.user import UserModel, UserSchema
 from flask_jwt_extended import create_access_token, create_refresh_token
 from security import encrypt_password
 
-ALREADY_EXISTS = "'{}' with this name already exists."
-HAS_TO_BE_EQUALS = " '{}' and '{}' has to be the same. "
-
 user_schema = UserSchema()
 
 
@@ -14,10 +11,14 @@ class UserRegister(Resource):
     def post(self):
         user = user_schema.load(request.get_json())
         if UserModel.find_by_username(user.username):
-            return {"message": ALREADY_EXISTS.format("User")}, 400
+            return {"message": gettext("already_exists").format("User")}, 400
         if user.password != user.confirmpassword:
             return (
-                {"message": HAS_TO_BE_EQUALS.format("password", "confirmpassword")},
+                {
+                    "message": gettext("has_to_be_equals").format(
+                        "password", "confirmpassword"
+                    )
+                },
                 400,
             )
 

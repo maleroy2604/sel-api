@@ -7,12 +7,7 @@ from models.exchange import ExchangeModel
 from models.user import UserModel
 from datetime import datetime
 from schemas.exchangeocurence import ExchangeOcurenceSchema
-
-BLANK_ERROR = "'{}' can't let be blank."
-NO_PLACE_AVAILABLE = "There is no place available."
-ERROR_INSERTING = "An error occurred while inserting the'{}'."
-NOT_ENOUGH_HOURS = "not enough hours."
-NOT_FOUND_ERROR = "'{}' not found."
+from libs.strings import gettext
 
 exchangeocurence_schema = ExchangeOcurenceSchema()
 exchangeocurence_list_schema = ExchangeOcurenceSchema(many=True)
@@ -30,9 +25,12 @@ class ExchangeOcurence(Resource):
                 exchange.increase_current_capacity()
                 return exchangeocurence_schema.dump(exchangeocurence), 201
             else:
-                return {"message": NO_PLACE_AVAILABLE}, 500
+                return {"message": gettext("no_place_available")}, 500
         except:
-            return {"message": ERROR_INSERTING.format("exchangeocurence")}, 500
+            return (
+                {"message": gettext("error_inserting").format("exchangeocurence")},
+                500,
+            )
 
     @classmethod
     @jwt_required
@@ -49,13 +47,13 @@ class ExchangeOcurence(Resource):
                 owner = UserModel.find_by_id(exchange.owner)
                 owner.decrease_counter_hours(exchangeocurence_data.hours)
             else:
-                return {"message": NOT_ENOUGH_HOURS}
+                return {"message": gettext("not_enough_hours")}
 
             exchangeocurence.delete_from_db()
         exchange.decrease_current_capacity()
 
         return exchangeocurence_schema.dump(exchangeocurence), 201
-        return {"message": NOT_FOUND_ERROR.format("exchangeocurence")}, 404
+        return {"message": gettext("not_found_error").format("exchangeocurence")}, 404
 
     @classmethod
     @jwt_required
@@ -66,7 +64,7 @@ class ExchangeOcurence(Resource):
             exchangeocurence.delete_from_db()
             exchange.decrease_current_capacity()
             return exchangeocurence_schema.dump(exchangeocurence), 201
-        return {"message": NOT_FOUND_ERROR.format("exchangeocurence")}, 404
+        return {"message": gettext("not_found_error").format("exchangeocurence")}, 404
 
 
 class ExchangeOcurenceList(Resource):

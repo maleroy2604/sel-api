@@ -20,6 +20,7 @@ class UserModel(db.Model):
     confirmpassword = db.Column(db.String(80))
     email = db.Column(db.String(80))
     counterHours = db.Column(db.Integer, default=2)
+    avatarurl = db.Column(db.String(80))
 
     exchanges = db.relationship(
         "ExchangeModel", lazy="dynamic", cascade="all, delete-orphan"

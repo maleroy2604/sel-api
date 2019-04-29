@@ -3,10 +3,7 @@ from flask import request
 from models.user import UserModel
 from flask_jwt_extended import jwt_required
 from schemas.user import UserSchema
-
-NOT_FOUND_ERROR = "'{}' not found."
-DELETE_SUCCEFUL = "'{}' succefully delete. "
-ERROR_INSERTING = "An error occurred while inserting the'{}'."
+from libs.strings import gettext
 
 user_schema = UserSchema()
 user_list_schema = UserSchema(many=True)
@@ -18,7 +15,7 @@ class User(Resource):
         user = UserModel.find_by_id(id)
         if user:
             return user_schema.dump(user), 201
-        return {"message": NOT_FOUND_ERROR.format("user")}, 404
+        return {"message": gettext("not_found_error").format("user")}, 404
 
     @classmethod
     @jwt_required
@@ -26,8 +23,8 @@ class User(Resource):
         user = UserModel.find_by_id(id)
         if user:
             user.delete_from_db()
-            return {"message": DELETE_SUCCEFUL.format("user")}
-        return {"message": NOT_FOUND_ERROR.format("user")}, 404
+            return {"message": gettext("deleted_succefuly").format("user")}
+        return {"message": gettext("not_found_error").format("user")}, 404
 
     @jwt_required
     def put(self, id: int):
@@ -41,9 +38,9 @@ class User(Resource):
                 user.save_to_db()
                 return user_schema.dump(user), 201
             except:
-                return {"message": ERROR_INSERTING.format("user")}
+                return {"message": gettext("error_inserting").format("user")}
 
-        return {"message": NOT_FOUND_ERROR.format("user")}, 404
+        return {"message": gettext("not not_found_error").format("user")}, 404
 
 
 class UserList(Resource):

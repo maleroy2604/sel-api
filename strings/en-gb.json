@@ -1,0 +1,22 @@
+{
+  "invalid_credentials": "Invalid credentails",
+  "blank_error": "'{}' can't let be blank.",
+  "not_found_error":  "'{}' not found.",
+  "error_inserting": "An error occurred while inserting the'{}'.",
+  "no_place_available": "There is no place available.",
+  "not_enough_hours": "not enough hours.",
+
+  "image_illegal_format" : "The format {} is not autorise.",
+  "image_illegal_name" : "The name {} is not autorise.",
+  "update_image_success": "Image {} uploaded with success.",
+  "update_image_fail": "Extension {} is not autorise.",
+  "delete_image_fail": "Fail to delete image",
+  "image_not_found": "Image not found.",
+  "deleted_image_success": "Image {} deleted with success.",
+
+  "deleted_succefuly": "'{}' succefully delete.",
+  "logout_succefuly": "Successfully logged out.",
+  "already_exists": "'{}' with this name already exists.",
+  "has_to_be_equals": "'{}' and '{}' has to be the same."
+
+}

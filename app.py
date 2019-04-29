@@ -15,7 +15,7 @@ from resources.userlogout import UserLogout
 from blacklist import BLACKLIST
 from db import db
 from ma import ma
-from resources.image import ImageUpload
+from resources.image import ImageUpload, Image
 from libs.image_helper import IMAGE_SET
 
 app = Flask(__name__)
@@ -54,6 +54,7 @@ api.add_resource(ExchangeOcurenceList, "/exchangeocurences/<exchangeId>")
 
 api.add_resource(Message, "/message/<int:id>")
 api.add_resource(ImageUpload, "/upload/image")
+api.add_resource(Image, "/image/<string:filename>")
 
 
 if __name__ == "__main__":

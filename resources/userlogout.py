@@ -8,8 +8,7 @@ from flask_jwt_extended import (
     get_raw_jwt,
 )
 from blacklist import BLACKLIST
-
-LOGOUT_SUCCEFUL = "Successfully logged out."
+from libs.strings import gettext
 
 
 class UserLogout(Resource):
@@ -18,4 +17,4 @@ class UserLogout(Resource):
     def post(cls):
         jti = get_raw_jwt()["jti"]
         BLACKLIST.add(jti)
-        return {"message": LOGOUT_SUCCEFUL}, 200
+        return {"message": gettext("logout_succefuly")}, 200

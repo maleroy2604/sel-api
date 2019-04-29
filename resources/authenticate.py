@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from models.user import UserModel
 from resources.user import UserSchema
 from security import check_encrypted_password
+from libs.strings import gettext
 
 user_schema = UserSchema()
 
@@ -29,4 +30,4 @@ class Authenticate(Resource):
                 200,
             )
 
-        return {"message": "Invalid credentials"}, 401
+        return {"message": gettext("invalid_credentials")}, 401
