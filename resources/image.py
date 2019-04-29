@@ -32,8 +32,8 @@ class ImageUpload(Resource):
                 sub_string = user.avatarurl[index + 1 : index + len(user.avatarurl)]
                 print(sub_string)
                 os.remove(image_helper.get_path(sub_string, folder=folder))
-            # "https://sel-app.herokuapp.com/image/" + basename
-            user.avatarurl = "http://10.0.2.2:5000/image/" + basename
+            user.avatarurl = "https://sel-app.herokuapp.com/image/" + basename
+            # user.avatarurl = "http://10.0.2.2:5000/image/" + basename
             user.save_to_db()
             return {"message": gettext("update_image_success").format(image_path)}, 201
         except UploadNotAllowed:
