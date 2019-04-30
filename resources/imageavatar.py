@@ -17,7 +17,7 @@ UPDATE_IMAGE_SUCCESS = "Image {} uploaded with success"
 UPDATE_IMAGE_FAIL = "Extension {} is not autorise"
 
 
-class ImageUpload(Resource):
+class ImageUploadAvatar(Resource):
     @jwt_required
     def post(self):
         data = image_schema.load(request.files)
@@ -30,10 +30,10 @@ class ImageUpload(Resource):
             if user.avatarurl:
                 index = user.avatarurl.rfind("/")
                 sub_string = user.avatarurl[index + 1 : index + len(user.avatarurl)]
-                print(sub_string)
-                os.remove(image_helper.get_path(sub_string, folder=folder))
-            user.avatarurl = "https://sel-app.herokuapp.com/image/" + basename
-            # user.avatarurl = "http://10.0.2.2:5000/image/" + basename
+                if image_helper.get_path(sub_string, folder=folder):
+                    os.remove(image_helper.get_path(sub_string, folder=folder))
+            user.avatarurl = "https://sel-app.herokuapp.com/imageavatar/" + basename
+            # user.avatarurl = "http://10.0.2.2:5000/imageavatar/" + basename
             user.save_to_db()
             return {"message": gettext("update_image_success").format(image_path)}, 201
         except UploadNotAllowed:
@@ -41,7 +41,7 @@ class ImageUpload(Resource):
             return {"message": gettext("update_image_fail").format(extension)}, 400
 
 
-class Image(Resource):
+class ImageAvatar(Resource):
     @jwt_required
     def get(self, filename: str):
         user_id = get_jwt_identity()
