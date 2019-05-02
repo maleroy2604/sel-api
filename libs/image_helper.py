@@ -27,7 +27,6 @@ def find_image_any_format(filename: str, folder: str) -> Union[str, None]:
 
 
 def _retrieve_filename(file: Union[str, FileStorage]) -> str:
-
     if isinstance(file, FileStorage):
         return file.filename
     return file
