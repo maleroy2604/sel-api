@@ -19,7 +19,7 @@ class UserModel(db.Model):
     password = db.Column(db.String(256), nullable=False)
     confirmpassword = db.Column(db.String(80))
     email = db.Column(db.String(80))
-    counterHours = db.Column(db.Integer, default=2)
+    counterHours = db.Column(db.Integer)
     avatarurl = db.Column(db.String(80))
 
     exchanges = db.relationship(

@@ -15,6 +15,7 @@ class ExchangeModel(db.Model):
     capacity = db.Column(db.Integer, nullable=False)
     date = db.Column(db.String(80), nullable=False)
     ownerName = db.Column(db.String(80))
+    avatarUrl = db.Column(db.String(80))
 
     owner = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     user = db.relationship("UserModel")
@@ -35,6 +36,16 @@ class ExchangeModel(db.Model):
         return cls.query.order_by(ExchangeModel.id.desc()).slice(
             numberlimit.numberlimitmin, numberlimit.numberlimitmax
         )
+
+    @classmethod
+    def find_all_exchange_by_id(cls, user_id) -> List:
+        return cls.query.filter_by(owner=user_id)
+
+    @classmethod
+    def change_avatar_url_exchanges(cls, user_id: int, avatarurl: str) -> None:
+        for exchange in ExchangeModel.find_all_exchange_by_id(user_id):
+            exchange.avatarUrl = avatarurl
+            exchange.save_to_db()
 
     def save_to_db(self) -> None:
         db.session.add(self)

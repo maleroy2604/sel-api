@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask_uploads import UploadNotAllowed
 from flask import send_file, request
 from models.user import UserModel
+from models.exchange import ExchangeModel
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import traceback
 import os
@@ -34,6 +35,7 @@ class ImageUploadAvatar(Resource):
             user.avatarurl = "https://sel-app.herokuapp.com/imageavatar/" + basename
             # user.avatarurl = "http://10.0.2.2:5000/imageavatar/" + basename
             user.save_to_db()
+            ExchangeModel.change_avatar_url_exchanges(user_id, user.avatarurl)
             return {"message": gettext("update_image_success").format(image_path)}, 201
         except UploadNotAllowed:
             extension = image_helper.get_extension(data["image"])
