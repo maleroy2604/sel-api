@@ -16,6 +16,7 @@ class ExchangeModel(db.Model):
     date = db.Column(db.String(80), nullable=False)
     ownerName = db.Column(db.String(80))
     avatarUrl = db.Column(db.String(80))
+    category = db.Column(db.String(80))
 
     owner = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     user = db.relationship("UserModel")
