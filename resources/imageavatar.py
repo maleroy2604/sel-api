@@ -10,9 +10,11 @@ import os
 from libs.strings import gettext
 from libs import image_helper
 from schemas.image import ImageSchema
+from schemas.user import UserSchema
 
 
 image_schema = ImageSchema()
+user_schema = UserSchema()
 
 UPDATE_IMAGE_SUCCESS = "Image {} uploaded with success"
 UPDATE_IMAGE_FAIL = "Extension {} is not autorise"
@@ -36,7 +38,7 @@ class ImageUploadAvatar(Resource):
             # user.avatarurl = "http://10.0.2.2:5000/imageavatar/" + basename
             user.save_to_db()
             ExchangeModel.change_avatar_url_exchanges(user_id, user.avatarurl)
-            return {"message": gettext("update_image_success").format(image_path)}, 201
+            return user_schema.dump(user), 201
         except UploadNotAllowed:
             extension = image_helper.get_extension(data["image"])
             return {"message": gettext("update_image_fail").format(extension)}, 400
