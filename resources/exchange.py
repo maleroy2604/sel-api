@@ -52,6 +52,7 @@ class Exchange(Resource):
             exchange.currentCapacity = exchange_data.currentCapacity
             exchange.capacity = exchange_data.capacity
             exchange.date = exchange_data.date
+            exchange.category = exchange_data.category
             try:
                 exchange.save_to_db()
             except:
