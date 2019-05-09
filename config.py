@@ -1,7 +1,7 @@
 import datetime
 import os
 
-DEBUG = False
+DEBUG = True
 SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///data.db")
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 PROPAGATE_EXCEPTIONS = True
