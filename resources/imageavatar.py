@@ -35,8 +35,8 @@ class ImageUploadAvatar(Resource):
                 filename = user.avatarurl[lastIndex + 1 :]
                 print(filename)
                 os.remove(image_helper.get_path(filename, folder=folder))
-            # user.avatarurl = "https://sel-app.herokuapp.com/imageavatar/" + basename
-            user.avatarurl = "http://10.0.2.2:5000/imageavatar/" + basename
+            user.avatarurl = "https://sel-app.herokuapp.com/imageavatar/" + basename
+            # user.avatarurl = "http://10.0.2.2:5000/imageavatar/" + basename
             user.save_to_db()
             ExchangeModel.change_avatar_url_exchanges(user_id, user.avatarurl)
             return user_schema.dump(user), 201
