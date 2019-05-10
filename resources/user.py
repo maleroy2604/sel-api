@@ -4,6 +4,7 @@ from models.user import UserModel
 from flask_jwt_extended import jwt_required
 from schemas.user import UserSchema
 from libs.strings import gettext
+from security import check_encrypted_password, encrypt_password
 
 user_schema = UserSchema()
 user_list_schema = UserSchema(many=True)
@@ -11,6 +12,7 @@ user_list_schema = UserSchema(many=True)
 
 class User(Resource):
     @classmethod
+    @jwt_required
     def get(cls, id: int):
         user = UserModel.find_by_id(id)
         if user:
@@ -31,15 +33,17 @@ class User(Resource):
         user_data = user_schema.load(request.get_json(), instance=UserModel())
         user = UserModel.find_by_id(id)
         if user:
+            if user_data.password and user_data.confirmpassword:
+                if user_data.password != user_data.confirmpassword:
+                    user.password = encrypt_password(user_data.password)
             user.username = user_data.username
-            user.password = user_data.password
             user.email = user_data.email
             try:
                 user.save_to_db()
                 return user_schema.dump(user), 201
             except:
-                return {"message": gettext("error_inserting").format("user")}
-
+                return {"message": gettext("error_inserting").format("user")}, 500
+            return {"message": gettext("error_password").format("password")}, 500
         return {"message": gettext("not not_found_error").format("user")}, 404
 
 

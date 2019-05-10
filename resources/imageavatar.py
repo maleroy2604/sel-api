@@ -30,8 +30,13 @@ class ImageUploadAvatar(Resource):
         try:
             image_path = image_helper.save_image(data["image"], folder=folder)
             basename = image_helper.get_basename(image_path)
-            user.avatarurl = "https://sel-app.herokuapp.com/imageavatar/" + basename
-            # user.avatarurl = "http://10.0.2.2:5000/imageavatar/" + basename
+            if user.avatarurl:
+                lastIndex = user.avatarurl.rfind("/")
+                filename = user.avatarurl[lastIndex + 1 :]
+                print(filename)
+                os.remove(image_helper.get_path(filename, folder=folder))
+            # user.avatarurl = "https://sel-app.herokuapp.com/imageavatar/" + basename
+            user.avatarurl = "http://10.0.2.2:5000/imageavatar/" + basename
             user.save_to_db()
             ExchangeModel.change_avatar_url_exchanges(user_id, user.avatarurl)
             return user_schema.dump(user), 201
@@ -56,7 +61,6 @@ class ImageAvatar(Resource):
         folder = "imageavatar"
         if not image_helper.is_filename_safe(filename):
             return {"message": gettext("image_illegal_name").format(filename)}, 400
-
         try:
             os.remove(image_helper.get_path(filename, folder=folder))
             return {"message": gettext("deleted_image_success").format(filename)}, 200
