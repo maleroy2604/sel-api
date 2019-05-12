@@ -30,10 +30,10 @@ class ImageUploadAvatar(Resource):
         try:
             image_path = image_helper.save_image(data["image"], folder=folder)
             basename = image_helper.get_basename(image_path)
-            if user.avatarurl:
-                lastIndex = user.avatarurl.rfind("/")
-                filename = user.avatarurl[lastIndex + 1 :]
-                os.remove(image_helper.get_path(filename, folder=folder))
+            # if user.avatarurl:
+            # lastIndex = user.avatarurl.rfind("/")
+            # filename = user.avatarurl[lastIndex + 1 :]
+            # os.remove(image_helper.get_path(filename, folder=folder))
             user.avatarurl = "https://sel-app.herokuapp.com/imageavatar/" + basename
             # user.avatarurl = "http://10.0.2.2:5000/imageavatar/" + basename
             user.save_to_db()
