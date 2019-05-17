@@ -48,6 +48,12 @@ class ExchangeModel(db.Model):
             exchange.avatarUrl = avatarurl
             exchange.save_to_db()
 
+    @classmethod
+    def change_ownername_exchange(cls, user_id: int, username: str) -> None:
+        for exchange in ExchangeModel.find_all_exchange_by_id(user_id):
+            exchange.ownerName = username
+            exchange.save_to_db()
+
     def save_to_db(self) -> None:
         db.session.add(self)
         db.session.commit()

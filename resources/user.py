@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from models.user import UserModel
+from models.exchange import ExchangeModel
 from flask_jwt_extended import jwt_required
 from schemas.user import UserSchema
 from libs.strings import gettext
@@ -36,8 +37,11 @@ class User(Resource):
             if user_data.password and user_data.confirmpassword:
                 if user_data.password != user_data.confirmpassword:
                     user.password = encrypt_password(user_data.password)
-            user.username = user_data.username
-            user.email = user_data.email
+            if user.username != user_data.username:
+                user.username = user_data.username
+                ExchangeModel.change_ownername_exchange(user.id, user.username)
+            if user.email != user_data.email:
+                user.email = user_data.email
             try:
                 user.save_to_db()
                 return user_schema.dump(user), 201
