@@ -3,13 +3,6 @@ from db import db
 from datetime import datetime
 from flask_restful import marshal
 
-# from models.configfields import messages_fields
-
-# recipients = db.Table('recipients',
-#    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-#    db.Column('message_id', db.Integer, db.ForeignKey('messages.id'))
-# )
-
 
 class UserModel(db.Model):
     __tablename__ = "users"
@@ -19,7 +12,7 @@ class UserModel(db.Model):
     password = db.Column(db.String(256))
     confirmpassword = db.Column(db.String(80))
     email = db.Column(db.String(80))
-    counterHours = db.Column(db.Integer)
+    counterHours = db.Column(db.Integer, default=2)
     avatarurl = db.Column(db.String(80))
 
     exchanges = db.relationship(
@@ -31,8 +24,6 @@ class UserModel(db.Model):
     messagesSends = db.relationship(
         "MessageModel", lazy="dynamic", cascade="all, delete-orphan"
     )
-
-    # messages_recipient = db.relationship('MessageModel', secondary = recipients, lazy = 'dynamic', backref = db.backref('users_recipient', lazy = 'dynamic') )
 
     def save_to_db(self) -> None:
         db.session.add(self)

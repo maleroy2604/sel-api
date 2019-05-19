@@ -18,5 +18,7 @@
   "logout_succefuly": "Successfully logged out.",
   "already_exists": "'{}' with this name already exists.",
   "has_to_be_equals": "'{}' and '{}' has to be the same.",
-  "error_password": "'{}' has to be different from the old one."
+  "error_password": "'{}' has to be different from the old one.",
+
+  "message_posted_sucefuly": "Message posted sucefuly ! "
 }

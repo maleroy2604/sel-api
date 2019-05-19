@@ -17,7 +17,9 @@ class ExchangeOcurence(Resource):
     @classmethod
     @jwt_required
     def post(cls, id: int):
-        exchangeocurence = exchangeocurence_schema.load(request.get_json())
+        exchangeocurence = exchangeocurence_schema.load(
+            request.get_json(), instance=ExchangeOcurenceModel()
+        )
         exchange = ExchangeModel.find_by_id(exchangeocurence.exchangeId)
         try:
             if exchange.currentCapacity < exchange.capacity:

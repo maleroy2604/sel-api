@@ -33,8 +33,7 @@ class ImageUploadAvatar(Resource):
             user.avatarurl = "https://sel-app.herokuapp.com/imageavatar/" + basename
             # user.avatarurl = "http://10.0.2.2:5000/imageavatar/" + basename
             user.save_to_db()
-            if user.avatarurl != user.avatarurl:
-                ExchangeModel.change_avatar_url_exchanges(user_id, user.avatarurl)
+            ExchangeModel.change_avatar_url_exchanges(user_id, user.avatarurl)
             return user_schema.dump(user), 201
         except UploadNotAllowed:
             extension = image_helper.get_extension(data["image"])
