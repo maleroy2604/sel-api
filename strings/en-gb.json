@@ -20,5 +20,6 @@
   "has_to_be_equals": "'{}' and '{}' has to be the same.",
   "error_password": "'{}' has to be different from the old one.",
 
-  "message_posted_sucefuly": "Message posted sucefuly ! "
+  "message_posted_sucefuly": "Message posted sucefuly ! ",
+  "category_already_exists": "This category already exists"
 }

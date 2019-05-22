@@ -12,11 +12,12 @@ from resources.exchangeocurence import ExchangeOcurence, ExchangeOcurenceList
 from resources.message import Message
 from resources.authenticate import Authenticate
 from resources.userlogout import UserLogout
+from resources.category import CategoryList
 from blacklist import BLACKLIST
 from db import db
 from ma import ma
 from resources.imageavatar import ImageUploadAvatar, ImageAvatar
-from resources.imageexchange import ImageExchange
+from resources.imagecategory import ImageCategory, UploadImageCategory
 from libs.image_helper import IMAGE_SET
 
 app = Flask(__name__)
@@ -54,9 +55,12 @@ api.add_resource(ExchangeOcurence, "/exchangeocurence/<int:id>")
 api.add_resource(ExchangeOcurenceList, "/exchangeocurences/<exchangeId>")
 
 api.add_resource(Message, "/message/<int:id>")
+
 api.add_resource(ImageUploadAvatar, "/uploadavatar/image")
 api.add_resource(ImageAvatar, "/imageavatar/<string:filename>")
-api.add_resource(ImageExchange, "/imageexchange/<string:filename>")
+api.add_resource(ImageCategory, "/imagecategory/<string:filename>")
+api.add_resource(UploadImageCategory, "/uploadimagecategory")
+api.add_resource(CategoryList, "/categories")
 
 
 if __name__ == "__main__":
