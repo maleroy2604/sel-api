@@ -5,7 +5,7 @@ from schemas.numberlimit import NumberLimitSchema
 from flask_jwt_extended import jwt_required
 from models.exchange import ExchangeModel
 from libs.strings import gettext
-
+from libs.decorator import verify_permission
 
 exchange_schema = ExchangeSchema()
 exchange_list_schema = ExchangeSchema(many=True)
@@ -33,6 +33,7 @@ class Exchange(Resource):
 
     @classmethod
     @jwt_required
+    # @verify_permission
     def delete(cls, id: int):
         exchange = ExchangeModel.find_by_id(id)
         if exchange:

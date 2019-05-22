@@ -21,5 +21,6 @@
   "error_password": "'{}' has to be different from the old one.",
 
   "message_posted_sucefuly": "Message posted sucefuly ! ",
-  "category_already_exists": "This category already exists"
+  "category_already_exists": "This category already exists",
+  "not_Allow": "You are not allow to do that"
 }

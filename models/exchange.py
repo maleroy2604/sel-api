@@ -34,8 +34,11 @@ class ExchangeModel(db.Model):
 
     @classmethod
     def find_all_limit(cls, numberlimit) -> List:
-        return cls.query.order_by(ExchangeModel.id.desc()).slice(
-            numberlimit.numberlimitmin, numberlimit.numberlimitmax
+        date = ExchangeModel.date
+        return (
+            cls.query.order_by(ExchangeModel.id.desc())
+            .filter(date > datetime.now())
+            .slice(numberlimit.numberlimitmin, numberlimit.numberlimitmax)
         )
 
     @classmethod
