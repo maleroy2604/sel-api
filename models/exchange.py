@@ -2,7 +2,6 @@ from db import db
 from models.user import UserModel
 from models.exchangeocurence import ExchangeOcurenceModel
 from typing import List
-from sqlalchemy import Date, cast
 from datetime import datetime
 
 
@@ -35,10 +34,13 @@ class ExchangeModel(db.Model):
 
     @classmethod
     def find_all_limit(cls, numberlimit) -> List:
-        created_at = datetime.now().date()
+        datetime_now = datetime.now()
         return (
             cls.query.order_by(ExchangeModel.id.desc())
-            .filter(cast(ExchangeModel.date, Date) > cast(created_at, Date))
+            .filter(
+                ExchangeModel.date
+                > datetime.strftime(datetime_now, "%Y-%m-%d %H:%M:%S")
+            )
             .slice(numberlimit.numberlimitmin, numberlimit.numberlimitmax)
         )
 
