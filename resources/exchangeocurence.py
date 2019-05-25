@@ -1,7 +1,7 @@
 import sqlite3
 from flask_restful import Resource
 from flask import request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.exchangeocurence import ExchangeOcurenceModel
 from models.exchange import ExchangeModel
 from models.user import UserModel
@@ -21,6 +21,8 @@ class ExchangeOcurence(Resource):
             request.get_json(), instance=ExchangeOcurenceModel()
         )
         exchange = ExchangeModel.find_by_id(exchangeocurence.exchangeId)
+        if exchangeocurence.participantId != get_jwt_identity():
+            return {"message": gettext("not_allow")}, 500
         try:
             if exchange.currentCapacity < exchange.capacity:
                 exchangeocurence.save_to_db()
@@ -42,6 +44,8 @@ class ExchangeOcurence(Resource):
         )
         exchangeocurence = ExchangeOcurenceModel.find_by_id(id)
         exchange = ExchangeModel.find_by_id(exchangeocurence_data.exchangeId)
+        if exchange.owner != get_jwt_identity():
+            return {"message": gettext("not_allow")}, 500
         if exchangeocurence:
             if exchange.check_balance_owner(exchangeocurence_data.hours):
                 user = UserModel.find_by_id(exchangeocurence_data.participantId)
@@ -62,6 +66,8 @@ class ExchangeOcurence(Resource):
     def delete(cls, id: int):
         exchangeocurence = ExchangeOcurenceModel.find_by_id(id)
         exchange = ExchangeModel.find_by_id(exchangeocurence.exchangeId)
+        if exchangeocurence.participantId != get_jwt_identity():
+            return {"message": gettext("not_allow")}, 500
         if exchangeocurence:
             exchangeocurence.delete_from_db()
             exchange.decrease_current_capacity()

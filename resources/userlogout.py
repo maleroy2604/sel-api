@@ -14,7 +14,7 @@ from libs.strings import gettext
 class UserLogout(Resource):
     @classmethod
     @jwt_required
-    def post(cls):
+    def post(cls,):
         jti = get_raw_jwt()["jti"]
         BLACKLIST.add(jti)
         return {"message": gettext("logout_succefuly")}, 200

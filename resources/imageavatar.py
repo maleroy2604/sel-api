@@ -22,22 +22,39 @@ UPDATE_IMAGE_FAIL = "Extension {} is not autorise"
 
 class ImageUploadAvatar(Resource):
     @jwt_required
-    def post(self):
-        data = image_schema.load(request.files)
-        user_id = get_jwt_identity()
+    def post(self, id: int):
         folder = "imageavatar"
-        user = UserModel.find_by_id(user_id)
+        data = image_schema.load(request.files)
+        if id != get_jwt_identity():
+            return {"message": gettext("not_allow")}, 500
+        user = UserModel.find_by_id(id)
         try:
             image_path = image_helper.save_image(data["image"], folder=folder)
             basename = image_helper.get_basename(image_path)
-            user.avatarurl = "https://sel-app.herokuapp.com/imageavatar/" + basename
-            # user.avatarurl = "http://10.0.2.2:5000/imageavatar/" + basename
+            user.imagename = basename
             user.save_to_db()
-            ExchangeModel.change_avatar_url_exchanges(user_id, user.avatarurl)
+            ExchangeModel.change_avatar_url_exchanges(id, user.imagename)
             return user_schema.dump(user), 201
         except UploadNotAllowed:
             extension = image_helper.get_extension(data["image"])
             return {"message": gettext("update_image_fail").format(extension)}, 400
+
+    @jwt_required
+    def delete(self, id: int):
+        folder = "imageavatar"
+        if id != get_jwt_identity():
+            return {"message": gettext("not_allow")}, 500
+        filename = UserModel.find_by_id(id).imagename
+        if not image_helper.is_filename_safe(filename):
+            return {"message": gettext("image_illegal_name").format(filename)}, 400
+        try:
+            os.remove(image_helper.get_path(filename, folder=folder))
+            return {"message": gettext("deleted_image_success").format(filename)}, 200
+        except FileNotFoundError:
+            return {"message": gettext("image_not_found")}, 404
+        except:
+            traceback.print_exc()
+            return {"message": gettext("delete_image_fail")}, 500
 
 
 class ImageAvatar(Resource):
@@ -50,17 +67,3 @@ class ImageAvatar(Resource):
             return send_file(image_helper.get_path(filename, folder=folder))
         except FileNotFoundError:
             return {"message": gettext("image_not_found")}, 404
-
-    @jwt_required
-    def delete(self, filename: str):
-        folder = "imageavatar"
-        if not image_helper.is_filename_safe(filename):
-            return {"message": gettext("image_illegal_name").format(filename)}, 400
-        try:
-            os.remove(image_helper.get_path(filename, folder=folder))
-            return {"message": gettext("deleted_image_success").format(filename)}, 200
-        except FileNotFoundError:
-            return {"message": gettext("image_not_found")}, 404
-        except:
-            traceback.print_exc()
-            return {"message": gettext("delete_image_fail")}, 500

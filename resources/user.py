@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request
 from models.user import UserModel
 from models.exchange import ExchangeModel
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from schemas.user import UserSchema
 from libs.strings import gettext
 from security import check_encrypted_password, encrypt_password
@@ -24,6 +24,8 @@ class User(Resource):
     @jwt_required
     def delete(cls, id: int):
         user = UserModel.find_by_id(id)
+        if user.id != get_jwt_identity():
+            return {"message": gettext("not_allow")}, 500
         if user:
             user.delete_from_db()
             return {"message": gettext("deleted_succefuly").format("user")}
@@ -33,6 +35,8 @@ class User(Resource):
     def put(self, id: int):
         user_data = user_schema.load(request.get_json(), instance=UserModel())
         user = UserModel.find_by_id(id)
+        if user.id != get_jwt_identity():
+            return {"message": gettext("not_allow")}, 500
         if user:
             if user_data.password and user_data.confirmpassword:
                 if user_data.password != user_data.confirmpassword:

@@ -20,6 +20,14 @@ class CategoryList(Resource):
     def post(cls):
         data = category_schema.load(request.get_json())
         category = CategoryModel.find_by_name(data.category)
-        # if category:
-        #    return {"message": gettext("already_exists").format("category")}, 400
+        if category:
+            return {"message": gettext("already_exists").format("category")}, 400
         data.save_to_db()
+        category_schema.dump(data), 201
+
+
+class MyCategoryList(Resource):
+    @classmethod
+    @jwt_required
+    def get(cls, id: int):
+        return category_list_schema.dump(CategoryModel.find_my_categories(id))

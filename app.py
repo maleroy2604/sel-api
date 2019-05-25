@@ -12,7 +12,7 @@ from resources.exchangeocurence import ExchangeOcurence, ExchangeOcurenceList
 from resources.message import Message
 from resources.authenticate import Authenticate
 from resources.userlogout import UserLogout
-from resources.category import CategoryList
+from resources.category import CategoryList, MyCategoryList
 from blacklist import BLACKLIST
 from db import db
 from ma import ma
@@ -56,11 +56,12 @@ api.add_resource(ExchangeOcurenceList, "/exchangeocurences/<exchangeId>")
 
 api.add_resource(Message, "/message/<int:id>")
 
-api.add_resource(ImageUploadAvatar, "/uploadavatar/image")
+api.add_resource(ImageUploadAvatar, "/uploadavatar/image/<int:id>")
 api.add_resource(ImageAvatar, "/imageavatar/<string:filename>")
 api.add_resource(ImageCategory, "/imagecategory/<string:filename>")
-api.add_resource(UploadImageCategory, "/uploadimagecategory")
-api.add_resource(CategoryList, "/categories")
+api.add_resource(UploadImageCategory, "/uploadimagecategory/image/<int:id>")
+api.add_resource(CategoryList, "/newcategory")
+api.add_resource(MyCategoryList, "/mycategorylist/<int:id>")
 
 
 if __name__ == "__main__":

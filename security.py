@@ -1,4 +1,5 @@
 from passlib.context import CryptContext
+from flask_jwt_extended import get_jwt_identity
 
 pwd_context = CryptContext(
     schemes=["pbkdf2_sha256"],
