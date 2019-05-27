@@ -60,7 +60,7 @@ api.add_resource(ImageUploadAvatar, "/uploadavatar/image/<int:id>")
 api.add_resource(ImageAvatar, "/imageavatar/<string:filename>")
 api.add_resource(ImageCategory, "/imagecategory/<string:filename>")
 api.add_resource(UploadImageCategory, "/uploadimagecategory/image/<int:id>")
-api.add_resource(CategoryList, "/newcategory")
+api.add_resource(CategoryList, "/newcategory", "/category/<int:id>")
 api.add_resource(MyCategoryList, "/mycategorylist/<int:id>")
 
 

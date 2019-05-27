@@ -31,24 +31,6 @@ class UploadImageCategory(Resource):
             extension = image_helper.get_extension(data["image"])
             return {"message": gettext("update_image_fail").format(extension)}, 400
 
-    @jwt_required
-    def delete(self, id: int):
-        folder = "category"
-        category = CategoryModel.find_by_ownerId(id)
-        if id != get_jwt_identity():
-            return {"message": gettext("not_allow")}, 500
-        filename = category.imagename + ".jpeg"
-        if not image_helper.is_filename_safe(filename):
-            return {"message": gettext("image_illegal_name").format(filename)}, 400
-        try:
-            os.remove(image_helper.get_path(filename, folder=folder))
-            return {"message": gettext("deleted_image_success").format(filename)}, 200
-        except FileNotFoundError:
-            return {"message": gettext("image_not_found")}, 404
-        except:
-            traceback.print_exc()
-            return {"message": gettext("delete_image_fail")}, 500
-
 
 class ImageCategory(Resource):
     @jwt_required

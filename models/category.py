@@ -21,8 +21,16 @@ class CategoryModel(db.Model):
         return cls.query.filter_by(category=categoryname).first()
 
     @classmethod
+    def find_by_id(cls, id: int):
+        return cls.query.filter_by(owner=id).first()
+
+    @classmethod
     def find_all(cls) -> List:
         return cls.query.all()
+
+    def delete_from_db(self) -> None:
+        db.session.delete(self)
+        db.session.commit()
 
     @classmethod
     def find_my_categories(cls, id: int) -> List:

@@ -16,6 +16,10 @@ def get_path(filename: str = None, folder: str = None) -> str:
     return IMAGE_SET.path(filename, folder)
 
 
+def update_name_image(pathToDirectory, NewName):
+    return IMAGE_SET.save(pathToDirectory, NewName)
+
+
 def find_image_any_format(filename: str, folder: str) -> Union[str, None]:
 
     for _format in IMAGES:

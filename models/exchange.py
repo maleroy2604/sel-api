@@ -60,6 +60,16 @@ class ExchangeModel(db.Model):
             exchange.ownerName = username
             exchange.save_to_db()
 
+    @classmethod
+    def change_category_exchange(cls, categoryname: str) -> None:
+        for exchange in ExchangeModel.find_all_exchange_by_category(categoryname):
+            exchange.category = None
+            exchange.save_to_db()
+
+    @classmethod
+    def find_all_exchange_by_category(cls, categoryname: str) -> List:
+        return cls.query.filter_by(category=categoryname)
+
     def save_to_db(self) -> None:
         db.session.add(self)
         db.session.commit()
