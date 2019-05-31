@@ -13,7 +13,7 @@ class Authenticate(Resource):
     @classmethod
     def post(cls):
         try:
-            data = user_schema.load(request.get_json())
+            data = user_schema.load(request.get_json(), instance=UserModel())
         except ValidationError as err:
             return err.messages, 400
         user = UserModel.find_by_username(data.username)

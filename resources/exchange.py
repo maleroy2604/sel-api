@@ -48,13 +48,13 @@ class Exchange(Resource):
         exchange_data = exchange_schema.load(
             request.get_json(), instance=ExchangeModel()
         )
+
         exchange = ExchangeModel.find_by_id(id)
         if exchange.owner != get_jwt_identity():
             return {"message": gettext("not_allow")}, 500
         if exchange:
             exchange.name = exchange_data.name
             exchange.description = exchange_data.description
-            exchange.currentCapacity = exchange_data.currentCapacity
             exchange.capacity = exchange_data.capacity
             exchange.date = exchange_data.date
             exchange.category = exchange_data.category

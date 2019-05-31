@@ -9,7 +9,7 @@ from resources.userregister import UserRegister
 from resources.tokenrefresh import TokenRefresh
 from resources.exchange import Exchange, ExchangeList
 from resources.exchangeocurence import ExchangeOcurence, ExchangeOcurenceList
-from resources.message import Message
+from resources.message import Message, MessageList
 from resources.authenticate import Authenticate
 from resources.userlogout import UserLogout
 from resources.category import CategoryList, MyCategoryList
@@ -54,11 +54,14 @@ api.add_resource(ExchangeList, "/exchanges")
 api.add_resource(ExchangeOcurence, "/exchangeocurence/<int:id>")
 api.add_resource(ExchangeOcurenceList, "/exchangeocurences/<exchangeId>")
 
-api.add_resource(Message, "/message/<int:id>")
+api.add_resource(Message, "/message")
+api.add_resource(MessageList, "/messages/<int:id>")
 
 api.add_resource(ImageUploadAvatar, "/uploadavatar/image/<int:id>")
 api.add_resource(ImageAvatar, "/imageavatar/<string:filename>")
-api.add_resource(ImageCategory, "/imagecategory/<string:filename>")
+api.add_resource(
+    ImageCategory, "/imagecategory/<string:filename>", "/imagecategory/<int:id>"
+)
 api.add_resource(UploadImageCategory, "/uploadimagecategory/image/<int:id>")
 api.add_resource(CategoryList, "/newcategory", "/category/<int:id>")
 api.add_resource(MyCategoryList, "/mycategorylist/<int:id>")

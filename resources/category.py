@@ -46,7 +46,7 @@ class CategoryList(Resource):
     @classmethod
     @jwt_required
     def put(cls):
-        data = category_schema.load(request.get_json())
+        data = category_schema.load(request.get_json(), instance=CategoryModel())
         folder = "category"
         category = CategoryModel.find_by_id(data.owner)
         if data.owner != get_jwt_identity():

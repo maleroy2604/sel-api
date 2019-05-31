@@ -3,6 +3,7 @@ from flask_uploads import UploadNotAllowed
 from flask import send_file, request
 from models.user import UserModel
 from models.exchange import ExchangeModel
+from models.message import MessageModel
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import traceback
 import os
@@ -34,6 +35,7 @@ class ImageUploadAvatar(Resource):
             user.imagename = basename
             user.save_to_db()
             ExchangeModel.change_avatar_url_exchanges(id, user.imagename)
+            MessageModel.change_avatar_url_messages(id, user.imagename)
             return user_schema.dump(user), 201
         except UploadNotAllowed:
             extension = image_helper.get_extension(data["image"])
