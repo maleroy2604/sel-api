@@ -39,7 +39,6 @@ class CategoryList(Resource):
         if category.owner != get_jwt_identity():
             {"message": gettext("not_allow")}, 500
         ExchangeModel.change_category_exchange(category.category)
-        os.remove(image_helper.get_path(category.imagename + ".jpeg", folder=folder))
         category.delete_from_db()
         return category_list_schema.dump(CategoryModel.find_my_categories(id)), 201
 
