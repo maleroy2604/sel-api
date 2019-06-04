@@ -7,7 +7,7 @@ class CategoryModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     imagename = db.Column(db.String(80), nullable=False)
-    category = db.Column(db.String(256), nullable=False)
+    category = db.Column(db.String(30), nullable=False)
 
     owner = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     user = db.relationship("UserModel")
