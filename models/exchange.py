@@ -10,7 +10,7 @@ class ExchangeModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
-    description = db.Column(db.String(80), nullable=False)
+    description = db.Column(db.String(256), nullable=False)
     currentCapacity = db.Column(db.Integer, nullable=False, default=0)
     capacity = db.Column(db.Integer, nullable=False)
     date = db.Column(db.String(80), nullable=False)
