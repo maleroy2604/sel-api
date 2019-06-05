@@ -38,7 +38,7 @@ class CategoryList(Resource):
             {"message": gettext("not_found_error").format("category")}, 500
         if category.owner != get_jwt_identity():
             {"message": gettext("not_allow")}, 500
-        ExchangeModel.change_category_exchange(category.category)
+        ExchangeModel.change_category_exchange(category.category, "no category")
         category.delete_from_db()
         return category_list_schema.dump(CategoryModel.find_my_categories(id)), 201
 

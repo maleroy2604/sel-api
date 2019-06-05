@@ -61,9 +61,9 @@ class ExchangeModel(db.Model):
             exchange.save_to_db()
 
     @classmethod
-    def change_category_exchange(cls, categoryname: str) -> None:
+    def change_category_exchange(cls, categoryname: str, nocategorystr: str) -> None:
         for exchange in ExchangeModel.find_all_exchange_by_category(categoryname):
-            exchange.category = categoryname
+            exchange.category = nocategorystr
             exchange.save_to_db()
 
     @classmethod
