@@ -8,7 +8,7 @@ class ExchangeOcurenceModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     hours = db.Column(db.Integer)
-    participantName = db.Column(db.String(80))
+    participantName = db.Column(db.String(30))
 
     exchangeId = db.Column(db.Integer, db.ForeignKey("exchanges.id"), nullable=False)
     exchange = db.relationship("ExchangeModel")
